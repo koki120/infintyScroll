@@ -1,0 +1,4 @@
+.eslintrc.cjs
+tailwind.config.cjs
+vite.config.ts
+postcss.config.cjs
