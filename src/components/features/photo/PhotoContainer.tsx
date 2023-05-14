@@ -9,18 +9,22 @@ export function PhotoContainer() {
   const [hasFailed, setHasFailed] = useState<boolean>(false);
   const [ret, setRet] = useState<Photo[]>([]);
   // 描画に直接関係あるStateとではない
-  const [scroll, setScroll] = useState(1);
+  const scroll = useRef(1);
   const scrollTriggerRef = useRef<HTMLDivElement>();
 
   const listInUseEffect = useCallback(
     async (cancel: boolean, abortController: AbortController) => {
       try {
         setIsLoading(true);
+        setHasFailed(false);
         const list = useListPhotoByAlbumId();
-
-        const result = await list(String(scroll), abortController.signal);
+        const result = await list(
+          String(scroll.current),
+          abortController.signal,
+        );
         if (!cancel) {
-          setScroll((pre) => pre + 1);
+          // TODO:fix scroll.current += 1が初回時に反映されず、scroll.current = 2 が存在しない。
+          scroll.current += 1;
           setRet((pre) => [...pre, ...result]);
         }
       } catch (e) {

@@ -33,6 +33,7 @@ export function PhotoPresenter({
                 src={photo.thumbnailUrl}
                 alt={photo.title}
               />
+              <p>{photo.id}</p>
             </Link>
           </Card>
         ))}

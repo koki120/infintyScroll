@@ -30,6 +30,7 @@ export const useFindById = <T>(
     (async () => {
       try {
         setIsLoading(true);
+        setHasFailed(false);
         if (
           (id === undefined || id === "") &&
           (key === undefined || key === "")
