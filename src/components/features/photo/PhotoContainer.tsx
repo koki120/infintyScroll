@@ -18,14 +18,12 @@ export function PhotoContainer() {
         setIsLoading(true);
         setHasFailed(false);
         const list = useListPhotoByAlbumId();
-        const result = await list(
-          String(scroll.current),
-          abortController.signal,
-        );
+        const result = list(String(scroll.current), abortController.signal);
         if (!cancel) {
-          // TODO:fix scroll.current += 1が初回時に反映されず、scroll.current = 2 が存在しない。
           scroll.current += 1;
-          setRet((pre) => [...pre, ...result]);
+          // awaitを後ですることで、scroll.current += 1をする前にfetchをしなくなる。
+          const awaitResult = await result;
+          setRet((pre) => [...pre, ...awaitResult]);
         }
       } catch (e) {
         if (!cancel) {
@@ -57,6 +55,8 @@ export function PhotoContainer() {
       intersectionObserver.observe(scrollTriggerRef.current);
     }
     return () => {
+      // scrollの初期化
+      scroll.current = 1;
       // axiosのcancel
       cancel = true;
       abortController.abort();

@@ -28,17 +28,17 @@ export function PhotoPresenter({
       )}
       <nav className="flex flex-wrap gap-5">
         {photos.map((photo) => (
-          <Card className="p-1">
-            <Link
-              key={photo.id + photo.albumId + photo.title}
-              to={appURL.photoDetail.replace(":id", String(photo.id))}
-            >
+          <Card
+            className="flex h-44 w-44 flex-col items-center justify-center p-2"
+            key={photo.id + photo.albumId + photo.title}
+          >
+            <Link to={appURL.photoDetail.replace(":id", String(photo.id))}>
               <img
-                className="h-40 w-40 rounded-2xl"
+                className="h-36 w-36 rounded-2xl"
                 src={photo.thumbnailUrl}
                 alt={photo.title}
               />
-              <p>{photo.id}</p>
+              <p className="text-center">{photo.id}</p>
             </Link>
           </Card>
         ))}
