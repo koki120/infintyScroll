@@ -12,6 +12,8 @@ export function usePhotoAPI(): PhotoAPI {
       const res = await axios.get<Photo>(`${uri}/${id}`, {
         signal,
       });
+      // eslint-disable-next-line no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return PhotoFromRes(res.data);
     },
     listByAlbumId: async (
