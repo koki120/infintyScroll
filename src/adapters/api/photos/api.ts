@@ -2,17 +2,15 @@ import axios from "axios";
 
 import { PhotoFromRes } from "@/adapters/api/photos/schema";
 import { Photo } from "@/entities/photo/dto";
+import { PhotoAPI } from "@/usecase/interface/Photo";
 
 const uri = "https://jsonplaceholder.typicode.com/photos";
 
-export function usePhotosAPI() {
+export function usePhotoAPI(): PhotoAPI {
   return {
     findById: async (id: string, signal: AbortSignal): Promise<Photo> => {
-      const res = await axios.get<Photo>(uri, {
+      const res = await axios.get<Photo>(`${uri}/${id}`, {
         signal,
-        params: {
-          id,
-        },
       });
       return PhotoFromRes(res.data);
     },
