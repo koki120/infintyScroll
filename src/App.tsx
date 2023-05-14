@@ -1,10 +1,11 @@
-import "@/App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+import { DefaultLayout } from "@/components/layouts/DefaultLayout";
 
 export const appURL = {
   error: "*",
@@ -13,7 +14,13 @@ export const appURL = {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path={appURL.top} element={<h1 className="h-10 w-10 bg-black">dfds</h1>} />,
+    <Route element={<DefaultLayout />}>
+      <Route
+        path={appURL.top}
+        element={<h1 className="h-10 w-10 bg-black">dfds</h1>}
+      />
+      ,
+    </Route>,
   ),
 );
 
