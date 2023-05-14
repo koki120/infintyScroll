@@ -53,7 +53,6 @@ export function PhotoContainer() {
     }
     return () => {
       // scrollの初期化
-      console.log("unmount");
       scroll.current = 1;
       // axiosのcancel
       abortController.abort();
