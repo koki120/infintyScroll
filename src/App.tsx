@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import { DefaultLayout } from "@/components/layouts/DefaultLayout";
+import { PhotoPage } from "@/components/pages/PhotoPage";
 
 export const appURL = {
   error: "*",
@@ -15,11 +16,7 @@ export const appURL = {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<DefaultLayout />}>
-      <Route
-        path={appURL.top}
-        element={<h1 className="h-10 w-10 bg-black">dfds</h1>}
-      />
-      ,
+      <Route path={appURL.top} element={<PhotoPage />} />,
     </Route>,
   ),
 );
