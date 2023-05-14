@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PhotoPresenter } from "@/components/features/photo/PhotoPresenter";
@@ -13,26 +14,23 @@ export function PhotoContainer() {
   const scrollTriggerRef = useRef<HTMLDivElement>();
 
   const listInUseEffect = useCallback(
-    async (cancel: boolean, abortController: AbortController) => {
+    async (abortController: AbortController) => {
       try {
         setIsLoading(true);
-        setHasFailed(false);
         const list = useListPhotoByAlbumId();
         const result = list(String(scroll.current), abortController.signal);
-        if (!cancel) {
-          scroll.current += 1;
-          // awaitを後ですることで、scroll.current += 1をする前にfetchをしなくなる。
-          const awaitResult = await result;
-          setRet((pre) => [...pre, ...awaitResult]);
-        }
+        scroll.current += 1;
+        // awaitを後ですることで、scroll.current += 1をする前にfetchをしなくなる。
+        const awaitResult = await result;
+        setRet((pre) => [...pre, ...awaitResult]);
       } catch (e) {
-        if (!cancel) {
+        if (axios.isAxiosError(e) && e.name === "CanceledError") {
+          // cancel時の処理
+        } else {
           setHasFailed(true);
         }
       } finally {
-        if (!cancel) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     },
     [],
@@ -40,13 +38,12 @@ export function PhotoContainer() {
 
   useEffect(() => {
     const abortController = new AbortController();
-    let cancel = false;
-    listInUseEffect(cancel, abortController);
+    listInUseEffect(abortController);
     const intersectionObserver = new IntersectionObserver((entities) => {
       entities.forEach((entity) => {
         if (entity.isIntersecting) {
           (async () => {
-            await listInUseEffect(cancel, abortController);
+            await listInUseEffect(abortController);
           })();
         }
       });
@@ -56,9 +53,9 @@ export function PhotoContainer() {
     }
     return () => {
       // scrollの初期化
+      console.log("unmount");
       scroll.current = 1;
       // axiosのcancel
-      cancel = true;
       abortController.abort();
       // 監視の停止
       if (scrollTriggerRef.current) {
