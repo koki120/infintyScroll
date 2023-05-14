@@ -1,4 +1,6 @@
-import { Card } from "@/components/ui/Card";
+import { Link } from "react-router-dom";
+
+import { appURL } from "@/components/functions/appURL";
 import { ErrorMessage } from "@/components/ui/ErrorMessege";
 import { SixDotsScaleMiddle } from "@/components/ui/SixDotsScaleMiddle";
 import { Photo } from "@/entities/photo/dto";
@@ -11,7 +13,7 @@ type Props = {
 
 export function PhotoDetailPresenter({ isLoading, hasFailed, photo }: Props) {
   return (
-    <Card className="mx-auto flex w-1/2 flex-col items-center justify-center gap-2 p-10">
+    <div className="mx-auto flex w-1/2 flex-col items-center justify-center gap-9 p-10">
       {isLoading ? (
         <SixDotsScaleMiddle />
       ) : (
@@ -21,6 +23,14 @@ export function PhotoDetailPresenter({ isLoading, hasFailed, photo }: Props) {
           <h1>{photo.title}</h1>
         </>
       )}
-    </Card>
+      <Link to={appURL.photo}>
+        <button
+          className="rounded-xl bg-slate-800 p-1 text-white shadow-md"
+          type="button"
+        >
+          back
+        </button>
+      </Link>
+    </div>
   );
 }

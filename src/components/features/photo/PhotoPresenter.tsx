@@ -19,9 +19,14 @@ export function PhotoPresenter({
   scrollTriggerRef,
 }: Props) {
   return (
-    <>
-      <nav className="mx-auto flex w-2/3 flex-wrap gap-5">
-        {hasFailed && <ErrorMessage message="情報の取得に失敗しました" />}
+    <div className="mx-auto flex w-2/3 flex-col gap-y-4">
+      {hasFailed && (
+        <ErrorMessage
+          className="text-center"
+          message="情報の取得に失敗しました"
+        />
+      )}
+      <nav className="flex flex-wrap gap-5">
         {photos.map((photo) => (
           <Card className="p-1">
             <Link
@@ -38,8 +43,8 @@ export function PhotoPresenter({
           </Card>
         ))}
       </nav>
-      {isLoading && <SixDotsScaleMiddle />}
+      {isLoading && <SixDotsScaleMiddle className="mx-auto" />}
       <div id="scrollTrigger" ref={scrollTriggerRef} />
-    </>
+    </div>
   );
 }

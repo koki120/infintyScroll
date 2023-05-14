@@ -20,6 +20,8 @@ export function usePhotoAPI(): PhotoAPI {
       id: string,
       signal: AbortSignal,
     ): Promise<Photo[]> => {
+      // eslint-disable-next-line no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await axios.get<Photo[]>(uri, {
         signal,
         params: {
