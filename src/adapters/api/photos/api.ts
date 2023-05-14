@@ -9,11 +9,11 @@ const uri = "https://jsonplaceholder.typicode.com/photos";
 export function usePhotoAPI(): PhotoAPI {
   return {
     findById: async (id: string, signal: AbortSignal): Promise<Photo> => {
+      // eslint-disable-next-line no-promise-executor-return
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await axios.get<Photo>(`${uri}/${id}`, {
         signal,
       });
-      // eslint-disable-next-line no-promise-executor-return
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       return PhotoFromRes(res.data);
     },
     listByAlbumId: async (
