@@ -25,7 +25,7 @@ export function PhotoContainer() {
         setRet((pre) => [...pre, ...awaitResult]);
       } catch (e) {
         if (axios.isAxiosError(e) && e.name === "CanceledError") {
-          // cancel時の処理
+          // cancel時の処理でsetHasFailed(true)するとなぜかunmount後も持ち越されるので、非実行
         } else {
           setHasFailed(true);
         }
