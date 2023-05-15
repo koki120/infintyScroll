@@ -1,4 +1,4 @@
-import axios from "axios";
+import { CanceledError } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { PhotoPresenter } from "@/components/features/photo/PhotoPresenter";
@@ -9,7 +9,7 @@ export function PhotoContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [hasFailed, setHasFailed] = useState<boolean>(false);
   const [ret, setRet] = useState<Photo[]>([]);
-  // 描画に直接関係あるStateとではない
+  // 描画に直接関係あるStateとではない,また、useRefはreactのサイクルに関係なく即時更新。
   const scroll = useRef(1);
   const scrollTriggerRef = useRef<HTMLDivElement>();
 
@@ -20,15 +20,15 @@ export function PhotoContainer() {
         const list = useListPhotoByAlbumId();
         const result = list(String(scroll.current), abortController.signal);
         scroll.current += 1;
-        // awaitを後ですることで、scroll.current += 1をする前にfetchをしなくなる。
+        // awaitを後ですることで、scroll.current += 1をする前にpromiseをしなくなる。
         const awaitResult = await result;
         setRet((pre) => [...pre, ...awaitResult]);
       } catch (e) {
-        if (axios.isAxiosError(e) && e.name === "CanceledError") {
+        if (e instanceof CanceledError) {
           // cancel時の処理でsetHasFailed(true)するとなぜかunmount後も持ち越されるので、非実行
-        } else {
-          setHasFailed(true);
+          return;
         }
+        setHasFailed(true);
       } finally {
         setIsLoading(false);
       }
@@ -38,7 +38,6 @@ export function PhotoContainer() {
 
   useEffect(() => {
     const abortController = new AbortController();
-    listInUseEffect(abortController);
     const intersectionObserver = new IntersectionObserver((entities) => {
       entities.forEach((entity) => {
         if (entity.isIntersecting) {
