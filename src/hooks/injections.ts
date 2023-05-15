@@ -4,13 +4,12 @@ export const useFindPhotoById = () => {
   const deps = {
     api: usePhotoAPI(),
   };
-  return (id: string, signal: AbortSignal) => deps.api.findById(id, signal);
+  return (id: string) => deps.api.findById(id);
 };
 
-export const useListPhotoByAlbumId = () => {
+export const useListPhoto = () => {
   const deps = {
     api: usePhotoAPI(),
   };
-  return (id: string, signal: AbortSignal) =>
-    deps.api.listByAlbumId(id, signal);
+  return (skip: string) => deps.api.listByAlbumId(skip);
 };
