@@ -1,5 +1,5 @@
 import { PhotoPresenter } from "@/components/features/photo/PhotoPresenter";
-import { useInfinityScroll } from "@/hooks/infintyScroll";
+import { useInfinityScroll } from "@/hooks/infinityScroll";
 import { useListPhoto } from "@/hooks/injections";
 
 export function PhotoContainer() {

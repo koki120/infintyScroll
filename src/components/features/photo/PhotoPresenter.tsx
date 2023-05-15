@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { appURL } from "@/components/functions/appURL";
 import { Card } from "@/components/ui/Card";
-import { ErrorMessage } from "@/components/ui/ErrorMessege";
+import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { SixDotsScaleMiddle } from "@/components/ui/SixDotsScaleMiddle";
 import { Photo } from "@/entities/photo/dto";
 
