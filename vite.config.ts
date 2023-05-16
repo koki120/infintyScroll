@@ -10,8 +10,6 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: "/src" }],
   },
-  base: process.env.GITHUB_PAGES // この行を追加
-    ? "infinityscroll" // この行を追加
-    : "/",
+  base: "/",
   plugins: [react()],
 });
