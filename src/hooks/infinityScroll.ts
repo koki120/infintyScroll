@@ -13,7 +13,7 @@ export const useInfinityScroll = <T>(
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [hasFailed, setHasFailed] = useState<boolean>(false);
   const [ret, setRet] = useState<T[]>([]);
-  // 描画に直接関係あるStateとではない,また、useRefはreactのサイクルに関係なく即時更新可能。
+  // 描画に直接関係あるStateとではない  また、useRefはreactのサイクルに関係なく即時更新可能。
   const skip = useRef(1);
   const scrollTrigger = useRef<HTMLDivElement>();
 
