@@ -19,7 +19,7 @@ export function PhotoPresenter({
   scrollTriggerRef,
 }: Props) {
   return (
-    <div className="mx-auto flex w-2/3 flex-col gap-y-4">
+    <div className="mx-auto flex w-4/5 flex-col gap-y-4">
       {hasFailed && (
         <ErrorMessage
           className="text-center"

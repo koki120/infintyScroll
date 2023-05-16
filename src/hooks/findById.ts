@@ -9,7 +9,7 @@ export type FindByIdHookType<T> = {
 };
 
 export const useFindById = <T>(
-  findById: (id: string, signal: AbortSignal) => Promise<T>,
+  findById: (id: string) => Promise<T>,
   newT: () => T,
   key?: string,
 ): FindByIdHookType<T> => {
@@ -24,37 +24,39 @@ export const useFindById = <T>(
     return "";
   };
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    let cancel = false;
-    (async () => {
-      try {
-        setIsLoading(true);
-        setHasFailed(false);
-        if (
-          (id === undefined || id === "") &&
-          (key === undefined || key === "")
-        ) {
-          throw new Error("Not Found");
-        }
-        const result = await findById(idToFind(), abortController.signal);
-        if (!cancel) {
-          setRet(result);
-        }
-      } catch (e) {
-        if (!cancel) {
-          setHasFailed(true);
-        }
-      } finally {
-        if (!cancel) {
-          setIsLoading(false);
-        }
+  const findByIdInUseEffect = async (exe: boolean) => {
+    try {
+      setIsLoading(true);
+      setHasFailed(false);
+      if (
+        (id === undefined || id === "") &&
+        (key === undefined || key === "")
+      ) {
+        throw new Error("Not Found");
       }
+      const result = await findById(idToFind());
+      if (exe) {
+        setRet(result);
+      }
+    } catch (e) {
+      if (exe) {
+        setHasFailed(true);
+      }
+    } finally {
+      if (exe) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    let exe = true;
+    (async () => {
+      await findByIdInUseEffect(exe);
     })();
     return () => {
-      // axiosのcancel
-      cancel = true;
-      abortController.abort();
+      // 全てのset関数の中止
+      exe = false;
     };
   }, []);
 
