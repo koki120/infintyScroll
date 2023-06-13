@@ -12,8 +12,8 @@ import { PhotoPage } from "@/components/pages/PhotoPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<DefaultLayout />}>
-      <Route index element={<PhotoPage />} />,
+    <Route path="/infintyScroll" element={<DefaultLayout />}>
+      <Route path={appURL.photo} element={<PhotoPage />} />,
       <Route path={appURL.photoDetail} element={<PhotoDetailPage />} />
     </Route>,
   ),
