@@ -10,7 +10,7 @@ export type InfinityScrollHookType<T> = {
 export const useInfinityScroll = <T>(
   list: (skip: string) => Promise<T[]>,
 ): InfinityScrollHookType<T> => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasFailed, setHasFailed] = useState<boolean>(false);
   const [ret, setRet] = useState<T[]>([]);
   // 描画に直接関係あるStateとではない  また、useRefはreactのサイクルに関係なく即時更新可能。
@@ -43,7 +43,7 @@ export const useInfinityScroll = <T>(
         }
       });
     });
-    if (scrollTrigger.current) {
+    if (scrollTrigger.current && !isLoading) {
       intersectionObserver.observe(scrollTrigger.current);
     }
     return () => {
